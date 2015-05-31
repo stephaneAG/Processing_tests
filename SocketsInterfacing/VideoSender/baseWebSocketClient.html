@@ -1,0 +1,64 @@
+<DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-type" content="html/text" charset="UTF-8">
+	<title> Websockets & Processing test </title>
+	<script src="jquery.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	
+		$(function(){
+			
+			var ws = null; //init de WebSocket var
+			var host = "127.0.0.1";
+			var port = 8080;
+			var socket = "p5websocket";
+			
+			console.log("trying to open the websocket");
+			var _socket = (undefined==socket)?" ":"/"+socket;
+			ws = new WebSocket("ws://"+host+":"+port+_socket);
+			
+			//when the connection is open, we send some daata to the server
+			ws.onopen = function(){
+				console.log('web socket opened');
+				ws.send('ping'); // send 'ping' msg to the server
+			};
+			
+			//if socket closes
+			ws.onclose = function(e){
+				console.log('web socket did close' + e);
+			};
+			
+			//if an error happens
+			ws.onerror = function(error){
+				console.log('web socket error:' + error);
+			};
+			
+			//if an incoming message is coming from server
+			ws.onmessage = function(e){
+				console.log('web socket received a message form server');
+				document['target'].src = e.data; // update the image
+			};
+			
+			
+			
+		});
+	
+	</script>
+	
+	
+</head>
+
+<body>
+	
+	<div id="test-target">
+		<img name="target" />
+	</div>
+	<div id="log">
+	
+	</div>
+	
+</body>
+
+</html>
